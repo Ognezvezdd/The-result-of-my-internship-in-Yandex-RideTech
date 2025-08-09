@@ -1,0 +1,328 @@
+USE schema_1;
+
+-- Autor: [REDACTED]
+-- Task: [REDACTED]
+-- Table: table_1
+$parse = DateTime::Parse('%Y-%m-%d %H:%M:%S');
+$curr_date = SUBSTRING(CAST(CurrentUtcDate() AS String), 0, 8) || '01';
+$start_tagging = $curr_date;
+$end_tagging = CAST(DateTime::MakeDate(DateTime::ShiftMonths(CurrentUtcDate(), 1)) AS String);
+$end_tagging = SUBSTRING($end_tagging, 0, 8) || '01';
+
+$diff_seconds = ($dttm2, $dttm1) -> {
+    RETURN (
+        CAST(
+            DateTime::ToSeconds(
+                DateTime::MakeDatetime($parse($dttm2))
+            ) AS Int64
+        )
+        - CAST(
+            DateTime::ToSeconds(
+                DateTime::MakeDatetime($parse($dttm1))
+            ) AS Int64
+        )
+    );
+};
+
+$filter_1 = ($x) -> {
+    RETURN Yson::ConvertToString($x.field) == 'model_1.col_1';
+};
+
+$filter_ = ($x) -> {
+    RETURN Yson::ConvertToString($x.field) == 'model_1.col_2';
+};
+
+$filter_3 = ($x) -> {
+    RETURN Yson::ConvertToString($x.field) == 'model_1.col_3';
+};
+
+$filter_4 = ($x) -> {
+    RETURN Yson::ConvertToString($x.field) == 'model_1.col_4';
+};
+
+$filter_country = ($x) -> {
+    RETURN Yson::ConvertToString($x.field) == 'country';
+};
+
+$res = (
+    SELECT
+        tags.nda_value AS nda_value,
+        tags.nda0_id AS nda0_id,
+        MAX_BY(`tags.timestamp`, iso_eventtime) AS `timestamp`,
+        some(act.nda_id) AS nda_id,
+        MAX_BY(tags.iso_eventtime, iso_eventtime) AS iso_eventtime,
+        MAX_BY(tags.exam, iso_eventtime) AS exam,
+        MAX_BY(tags.nda_value_2, iso_eventtime) AS nda_value_2,
+        MAX_BY(tags.nda_field_8, iso_eventtime) AS nda_field_8,
+        SUBSTRING(
+            String::ReplaceAll(CAST(MAX(`tags.timestamp`) AS string), 'T', ' '),
+            0, 19
+        ) AS MAX_timestamp,
+        SUBSTRING(
+            String::ReplaceAll(CAST(MIN(`tags.timestamp`) AS string), 'T', ' '),
+            0, 19
+        ) AS MIN_timestamp,
+        some(act.nda_id_5) AS nda_id_5,
+        AGGREGATE_LIST_DISTINCT(
+            tags.nda_field_9
+        ) AS pools,
+        MAX_BY(tags.nda_field_10, `tags.timestamp`) AS nda_field_10,
+    FROM
+        range(`path_1`, $start_tagging, $end_tagging) AS tags
+    LEFT JOIN (
+        SELECT
+            nda_id,
+            nda2_id || '_' || nda_id AS nda3_id,
+            nda4_id AS nda_id_5
+        FROM
+            `path_2`
+    ) AS act
+    ON
+        tags.nda_value == act.nda3_id
+    WHERE
+        TRUE
+        AND exam == 'const'
+        AND act.nda_id IS NOT NULL
+    GROUP BY
+        tags.nda_value,
+        tags.nda0_id
+);
+
+$aggregated = (
+    SELECT
+        *
+    FROM
+        `path_3`
+    UNION ALL
+    SELECT
+        *
+    FROM
+        `path_4`
+    UNION ALL
+    SELECT
+        *
+    FROM
+        `path_5`
+);
+
+$system = (
+    SELECT DISTINCT
+        a.id AS id,
+        a.nda_value AS nda_value,
+        MAX_BY(a.country, a.created) AS country,
+        MAX_BY(number.field_1, a.created) AS field_1,
+        MAX_BY(brands.field_2, a.created) AS field_2,
+        MAX_BY(brands.field_3, a.created) AS field_3,
+        MAX_BY(a.field_4, a.created) AS field_4,
+        MAX_BY(a.field_5, a.created) AS field_5,
+    FROM (
+        SELECT DISTINCT
+            *
+        FROM
+            `path_6`
+    ) AS a
+    LEFT JOIN
+        `path_7` AS number
+    ON
+        a.id == number.id AND a.nda_value == number.nda_value
+    LEFT JOIN
+        $aggregated AS brands
+    ON
+        a.id == brands.id AND a.nda_value == brands.nda_value
+    GROUP BY
+        a.id,
+        a.nda_value
+);
+
+$nda_table = (
+    SELECT DISTINCT
+        *
+    FROM
+        `path_8`
+    UNION ALL
+    SELECT
+        *
+    FROM
+        `path_9`
+);
+
+$nda_table = (
+    SELECT
+        MAX_BY(id, `date`) AS id,
+        MAX_BY(nda_value, `date`) AS nda_value,
+        MAX_BY(`date`, `date`) AS `date`,
+        MAX_BY(brand, `date`) AS brand,
+        MAX_BY(nda_field_5, `date`) AS nda_field_5,
+        MAX_BY(nda_field_12, `date`) AS nda_field_12,
+        MAX_BY(nda_field_11, `date`) AS nda_field_11,
+        MAX_BY(nda_field_6, `date`) AS nda_field_6,
+        MAX_BY(nda_field_7, `date`) AS nda_field_7,
+        MAX_BY(country, `date`) AS country,
+        MAX_BY(nda_field_3, `date`) AS nda_field_3,
+        MAX_BY(nda_field_4, `date`) AS nda_field_4,
+        MAX_BY(number, `date`) AS number,
+        MAX_BY(value_nda_2, `date`) AS value_nda_2,
+        MAX_BY(value_nda_1, `date`) AS value_nda_1,
+    FROM
+        $nda_table
+    GROUP BY
+        id,
+        nda_value
+);
+
+$res = (
+    SELECT
+        res.*,
+
+        -- [REDACTED]
+        nda_table_1.brand AS system_brand,
+
+        -- [REDACTED]
+        nda_table_1.nda_field_5 AS ML_nda_field_5,
+
+        -- [REDACTED]
+        nda_table_1.nda_field_11 AS ML_nda_field_11,
+
+        -- [REDACTED]
+        nda_table_1.nda_field_7 AS nda_field_7,
+
+        -- [REDACTED]
+        CAST(
+            Yson::ConvertToString(
+                Unwrap(
+                    Just(
+                        ListFilter(
+                            Yson::ConvertToList(res.nda_value_2),
+                            $filter_country
+                        )[0].value
+                    )
+                )
+            ) AS String
+        ) AS country,
+
+        -- [REDACTED]
+        Substring(res.iso_eventtime, 0, 10) AS dt,
+
+        -- [REDACTED]
+        nda_table_1.nda_field_3 AS nda_field_3,
+
+        -- [REDACTED]
+        nda_table_1.nda_field_4 AS nda_field_4,
+
+        -- [REDACTED]
+        nda_table_1.number AS number,
+
+        -- [REDACTED]
+        nda_table_1.value_nda_2 AS value_nda_2,
+
+        -- [REDACTED]
+        nda_table_1.value_nda_1 AS value_nda_1,
+
+        -- [REDACTED]
+        $diff_seconds(
+            res.MAX_timestamp,
+            res.MIN_timestamp
+        ) AS lifetime,
+        CAST(nda_table_1.id IS NOT NULL AND nda_table_1.nda_value IS NOT NULL AS Bool) AS correct_join,
+        system.field_1 AS system_field_1,
+        system.field_2 AS system_field_2,
+        system.field_3 AS system_field_3,
+        system.field_4 AS system_field_4,
+        system.field_5 AS system_field_5,
+        CAST(
+            Yson::ConvertToString(
+                Unwrap(
+                    Just(
+                        ListFilter(
+                            Yson::ConvertToList(res.nda_value_2),
+                            $filter_1
+                        )[0].value
+                    )
+                )
+            ) AS Float
+        ) AS value_nda_3,
+        CAST(
+            Yson::ConvertToString(
+                Unwrap(
+                    Just(
+                        ListFilter(
+                            Yson::ConvertToList(res.nda_value_2),
+                            $filter_
+                        )[0].value
+                    )
+                )
+            ) AS Float
+        ) AS value_nda_4,
+        Yson::ConvertToList(
+            Unwrap(
+                Just(
+                    ListFilter(
+                        Yson::ConvertToList(nda_value_2),
+                        $filter_3
+                    )[0].value
+                )
+            )
+        ) AS nda_field_1,
+        Yson::ConvertToList(
+            Unwrap(
+                Just(
+                    ListFilter(
+                        Yson::ConvertToList(nda_value_2),
+                        $filter_4
+                    )[0].value
+                )
+            )
+        ) AS nda_field_2,
+    FROM
+        $res AS res
+    LEFT JOIN (
+        SELECT
+            *
+        FROM
+            $nda_table
+    ) AS nda_table_1
+    ON
+        res.nda_value == nda_table_1.nda_value AND res.nda0_id == nda_table_1.id
+    LEFT JOIN (
+        SELECT
+            *
+        FROM
+            $system
+    ) AS system
+    ON
+        res.nda_value == system.nda_value AND res.nda0_id == system.id
+);
+
+-- [REDACTED]
+$script = [REDACTED]
+
+$value_nda = Python::nda(Callable<(String?, String?) -> Int64?>, $script);
+$object = 'const_1';
+
+$res = (
+    SELECT
+        res.*,
+        if(
+            $value_nda(nda0_id, $object) < 500,
+            'flag1',
+            'flag2'
+        ) AS flag_one,
+        if(
+            'value1' IN pools,
+            'value2',
+            'value3'
+        ) AS flag_two,
+    FROM
+        $res AS res
+    WHERE
+        nda0_id IS NOT NULL
+);
+
+$path = 'result_path' || $curr_date;
+
+INSERT INTO $path WITH TRUNCATE
+SELECT
+    *
+FROM
+    $res
+;
