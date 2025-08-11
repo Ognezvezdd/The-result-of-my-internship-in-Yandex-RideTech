@@ -1,6 +1,9 @@
 -- Этот код является одним из самых больших
 -- и подробных, что я делал за время стажировки
 -- Надеюсь, его хватит чтобы примерно понять уровень и объем работы
+-- This code is one of the largest
+-- And the detailed what I did during the internship
+-- I hope it is enough to roughly understand the level and value of work
 
 USE schema_1;
 

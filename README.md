@@ -71,3 +71,81 @@
 /Nirvana/             — Проекты в Nirvana реализованные блоками кода с автозапуском
 /Dashboards/          — Примеры дашбордов и мониторингов (описания, скриншоты)  
 README.md             — Этот файл
+
+---
+====================================================================================
+
+
+# Internship Results at Yandex.Dostavka (RideTech)
+
+This repository contains the results of my 4-month internship at **Yandex.Dostavka (RideTech)**, in the courier product algorithms team.
+
+During the internship, I worked on launching and analyzing A/B tests, improving ML models, building monitoring systems and dashboards, as well as researching metrics that affect courier efficiency.
+
+---
+
+## 📌 Overview
+
+I was part of a team responsible for developing and optimizing key courier service metrics such as:
+
+- SH (Supply Hours)
+- DPH (Deliveries per Hour)
+- AR (Acceptance Rate)
+- CR (Completed Rate)
+- Utilization
+- Contact Rate  
+...and others.
+
+My tasks included the **full experiment cycle** — from hypothesis generation to result analysis, production monitoring, and drawing conclusions.
+
+---
+
+## 💼 Key Achievements
+
+### 🔬 A/B Testing
+
+- Launched and analyzed **5+ A/B tests**
+- Conducted a dedicated **A/A test** to assess sample stability and courier reliability
+- Performed in-depth analysis of effects and influencing factors
+
+> 📌 **Example**: In one test, I discovered that using an additional device at the pick-up point can significantly reduce courier waiting time  
+> *(details hidden under NDA)* <!-- NDA: redacted -->
+
+### 🤖 ML Model Work
+
+- Conducted an in-depth study of the logic behind one of the production ML models
+- Proposed and implemented an **improved version of the model**
+- Supported changes with both theoretical analysis and practical results
+
+### 📊 Monitoring & Visualization
+
+- Created multiple **dashboards and alerts** for real-time metric tracking
+- Set up a monitoring system for both A/B and A/A tests
+
+---
+
+## 🚀 Main Outcomes
+
+- 📉 Reduced average courier waiting time at pick-up points by ~X% (X — significantly impacts company profit) *(details hidden under NDA)* <!-- NDA: redacted -->
+- 📈 Conducted an A/A test to evaluate courier reliability
+- 🔄 Improved an ML model and proved its effectiveness both theoretically and in practice
+- 📊 Built a complete monitoring and visualization system for metrics
+
+---
+
+## 🛠 Technologies Used
+
+- `YQL` (Yandex Query Language) + `SQL`
+- `ClickHouse`, `YT`
+- `Python`
+- Yandex internal tools for A/B testing, monitoring, and visualization (`Datalens`, `Nirvana`, etc.)
+
+---
+
+## 📂 Repository Structure
+
+```text
+/YQL_example.txt      — Large example of YQL code
+/Nirvana/             — Projects in Nirvana implemented with code blocks and auto-execution
+/Dashboards/          — Examples of dashboards and monitoring (descriptions, screenshots)  
+README.md             — This file
