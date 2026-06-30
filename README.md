@@ -73,6 +73,7 @@ My tasks included the **full experiment cycle** — from hypothesis generation t
 /Nirvana/             — Projects in Nirvana implemented with code blocks and auto-execution
 /Dashboards/          — Examples of dashboards and monitoring (descriptions, screenshots)  
 README.md             — This file
+```
 
 ---
 ====================================================================================
